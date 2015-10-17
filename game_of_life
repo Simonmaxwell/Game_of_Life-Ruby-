@@ -1,15 +1,35 @@
-size_x = 15
-size_y = 15
 
-cell_grid = Array.new(size_x) { Array.new(size_y) }
- (0...size_y).each do |y|
-   (0...size_x).each { |x|
-     cell_grid[x][y] = Random.rand(2) ==1
-     if cell_grid[x][y] then
-       print 'X '
-     else
-       print 'O '
-     end
-   }
-   puts
- end
+
+class Grid
+  attr_reader :size_x, :size_y
+  def initialize(size_x,size_y)
+    @size_x = size_x
+    @size_y = size_y
+    @cell_grid =
+        (0...size_y).map do |y|
+          (0...size_x).map do |x|
+            Random.rand(2) ==1
+          end
+        end
+  end
+  def get(x,y)
+    @cell_grid[y][x]
+  end
+end
+
+def report(cell_grid)
+  (0...cell_grid.size_y).each do |y|
+    (0...cell_grid.size_x).each do |x|
+      if cell_grid.get(x,y) then
+        print 'X '
+      else
+        print 'O '
+      end
+    end
+    puts
+  end
+end
+
+  cell_grid = Grid.new(8,9)
+  report(cell_grid)
+
