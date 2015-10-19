@@ -1,24 +1,23 @@
 
-
-class Grid
-  attr_reader :size_x, :size_y
-  def initialize(size_x,size_y)
-    @size_x = size_x
-    @size_y = size_y
-    @cell_grid =
-        (0...size_y).map do |y|
-          (0...size_x).map do |x|
-            Random.rand(2)
-          end
-        end
+def generate_grid(size_x,size_y)
+  (0...size_y).map do |y|
+    (0...size_x).map do |x|
+      Random.rand(2)
+    end
   end
-  def get(x,y)
-    @cell_grid[y][x]
+end
+
+class GridAlgorithm
+
+  def initialize(storage)
+    @size_y = storage.length
+    @size_x = storage[0].length
+    @storage = storage
   end
 
   def census_value_at(x,y)
     return 0 if y < 0 || y >= @size_y || x < 0 || x >= @size_x
-    @cell_grid[y][x]
+    @storage[y][x]
   end
 
   def count_neighbors(x,y)
@@ -32,7 +31,7 @@ class Grid
   end
 
   def alive_or_not(x,y)
-    if @cell_grid[x][y]
+    if @storage[y][x] == 1
       count_neighbors(x,y) >= 2 && count_neighbors(x,y) <= 3
     else
       count_neighbors(x,y) == 3
@@ -41,32 +40,31 @@ class Grid
   end
 
   def life_goes_on
-    (0...size_y).map do |y|
-      (0...size_x).map do |x|
-        alive_or_not(x,y)
+    (0...@size_y).map do |y|
+      (0...@size_x).map do |x|
+          alive_or_not(x,y)
         end
       end
-  end
-
-  def next_generation
-    @cell_grid = life_goes_on
   end
 
 end
 
 def report(cell_grid)
-  (0...cell_grid.size_y).each do |y|
-    (0...cell_grid.size_x).each do |x|
-      if cell_grid.get(x,y) == 1 then
-        print 'O '
-      else
-        print '* '
-      end
+  cell_grid.each do |row|
+    row.each do |cell|
+      print (cell == 1) ? 'ʘ ' : '. '
     end
     puts
   end
 end
 
-cell_grid = Grid.new(15,15)
-report(cell_grid)
+def passage_of_time
+  grid = generate_grid(15,15)
+  biome = GridAlgorithm.new(grid)
+  next_generation = biome.life_goes_on
+  report(next_generation)
+
+end
+
+passage_of_time
 
