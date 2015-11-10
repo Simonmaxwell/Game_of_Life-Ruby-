@@ -42,7 +42,7 @@ class GridAlgorithm
   def life_goes_on
     (0...@size_y).map do |y|
       (0...@size_x).map do |x|
-          alive_or_not(x,y)
+          alive_or_not(x,y) ? 1 : 0
         end
       end
   end
@@ -60,10 +60,16 @@ end
 
 def passage_of_time
   grid = generate_grid(15,15)
-  biome = GridAlgorithm.new(grid)
-  next_generation = biome.life_goes_on
-  report(next_generation)
+  continue = 'y'
 
+  while continue == 'y'
+    biome = GridAlgorithm.new(grid)
+    next_generation = biome.life_goes_on
+    report(next_generation)
+    grid = next_generation
+    puts 'Continue Y/N?:'
+    continue = gets.chomp.downcase
+  end
 end
 
 passage_of_time

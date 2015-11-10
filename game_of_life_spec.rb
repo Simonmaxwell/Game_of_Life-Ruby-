@@ -78,4 +78,30 @@ describe GridAlgorithm do
     end
   end
 
+  describe 'life_goes_on' do
+    context 'with a partially filled four-by-four grid' do
+      let(:grid) {
+        [[0,1,0,0],
+         [0,0,1,0],
+         [1,1,1,0],
+         [0,0,0,0],
+        ]
+      }
+
+      let(:next_grid) {
+        [[0,0,0,0],
+         [1,0,1,0],
+         [0,1,1,0],
+         [0,1,0,0],
+        ]
+      }
+
+      let(:algorithm) { GridAlgorithm.new(grid) }
+
+      it 'returns a new grid that has advanced one step' do
+        expect(algorithm.life_goes_on()).to eq(next_grid)
+      end
+    end
+  end
+
 end
